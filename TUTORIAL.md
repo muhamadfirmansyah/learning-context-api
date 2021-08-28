@@ -153,3 +153,33 @@ export default Form;
         setLists(newList)
     } 
 ```
+
+---
+
+### Menghapus Data di Context
+
+```js
+// src/components/Todos.js
+
+    //
+    const { remove, lists } = useContext(DataContext)
+
+    const removeItem = (id) => {
+        remove(id)
+    }
+
+    //
+    <button onClick={() => removeItem(item.id)}>remove</button>
+```
+
+```js
+// src/context/DataContext.js
+
+    //
+    const remove = (id) => {
+        setLists(lists.filter(item => item.id !== id));
+    }
+
+    //
+    <DataContext.Provider value={{ lists, add, remove }}>
+```
