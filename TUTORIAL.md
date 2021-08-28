@@ -183,3 +183,93 @@ export default Form;
     //
     <DataContext.Provider value={{ lists, add, remove }}>
 ```
+
+---
+
+### Menggunakan Reducer dan Action
+
+```js
+// src/components/Form.js
+
+    const { dispatch } = useContext(DataContext);
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        const action = {
+            type: "ADD",
+            payload: text
+        }
+
+        dispatch(action);
+        setText("");
+    }
+```
+
+```js
+// src/components/Todos.js
+
+    const { lists, dispatch } = useContext(DataContext)
+
+    const removeItem = (id) => {
+        const action = {
+            type: "DEL",
+            payload: id
+        }
+
+        dispatch(action)
+    }
+```
+
+```js
+// src/context/DataContext.js
+
+import React, { createContext, useReducer } from 'react';
+import { listReducer } from '../reducers/listReducer';
+
+// Export Context
+export const DataContext = createContext();
+
+// Data
+const initialState = [
+    {
+        id: 1,
+        title: 'This is title one',
+    }
+]
+
+// Provider : agar komponen bisa mengunakan context
+export const DataProvider = (props) => {
+
+    const [lists, dispatch] = useReducer(listReducer, initialState);
+    
+    return (
+        <DataContext.Provider value={{ lists, dispatch }}>
+            { props.children }
+        </DataContext.Provider>
+    )
+}
+```
+
+```js
+// src/reducers/listReducer.js
+export const listReducer = (state, action) => {
+    const {type, payload} = action
+
+    switch (type) {
+        case "DEL":
+            return state.filter((item) => item.id !== payload)
+
+        case "ADD":
+            const newItem = {
+                id: state.length + 1,
+                title: payload
+            }
+
+            return [...state, newItem];
+
+        default:
+            return state;
+    }
+}
+```

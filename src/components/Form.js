@@ -4,12 +4,17 @@ import { DataContext } from '../context/DataContext';
 const Form = () => {
     const [text, setText] = useState("");
 
-    const { add } = useContext(DataContext);    
+    const { dispatch } = useContext(DataContext);
 
     const submit = (e) => {
         e.preventDefault();
 
-        add(text);
+        const action = {
+            type: "ADD",
+            payload: text
+        }
+
+        dispatch(action);
         setText("");
     }
 
