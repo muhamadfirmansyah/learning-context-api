@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { add } from '../actions/listAction';
 import { DataContext } from '../context/DataContext';
 
 const Form = () => {
@@ -9,12 +10,7 @@ const Form = () => {
     const submit = (e) => {
         e.preventDefault();
 
-        const action = {
-            type: "ADD",
-            payload: text
-        }
-
-        dispatch(action);
+        dispatch(add(text));
         setText("");
     }
 

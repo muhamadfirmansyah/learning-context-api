@@ -273,3 +273,86 @@ export const listReducer = (state, action) => {
     }
 }
 ```
+
+---
+
+### Refactor Action
+
+```js
+// src/actions/listAction.js
+
+export const add = data => {
+    return {
+        type: "ADD",
+        payload: data
+    }
+}
+
+export const del = id => {
+    return {
+        type: "DEL",
+        payload: id
+    }
+}
+```
+
+```js
+// src/components/Form.js
+
+import React, { useContext, useState } from 'react';
+import { add } from '../actions/listAction';
+import { DataContext } from '../context/DataContext';
+
+const Form = () => {
+    const [text, setText] = useState("");
+
+    const { dispatch } = useContext(DataContext);
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        dispatch(add(text));
+        setText("");
+    }
+
+    return (
+        <form onSubmit={submit}>
+            <input type="text" value={text} placeholder="Enter new list" onChange={(e) => setText(e.target.value)} />
+            <button>Add</button>
+        </form>
+    )
+}
+
+export default Form;
+```
+
+```js
+// src/components/Todos.js
+
+import React, { useContext } from 'react';
+import { del } from '../actions/listAction';
+import { DataContext } from '../context/DataContext';
+
+const Todos = () => {
+    const { lists, dispatch } = useContext(DataContext)
+
+    const removeItem = (id) => {
+        dispatch(del(id))
+    }
+
+    return (
+        <div>
+            <ul>
+                { lists.map((item) => 
+                    <li key={item.id}>
+                        {item.title}
+                        <button onClick={() => removeItem(item.id)}>remove</button>
+                    </li>
+                ) }
+            </ul>
+        </div>
+    )
+}
+
+export default Todos;
+```
