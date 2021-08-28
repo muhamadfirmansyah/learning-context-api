@@ -104,3 +104,52 @@ export const DataProvider = (props) => {
     )
 }
 ```
+
+
+---
+
+# Menambah Data ke Context
+
+```js
+// src/components/Form.js
+
+import React, { useContext, useState } from 'react';
+import { DataContext } from '../context/DataContext';
+
+const Form = () => {
+    const [text, setText] = useState("");
+
+    const { add } = useContext(DataContext);    
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        add(text);
+        setText("");
+    }
+
+    return (
+        <form onSubmit={submit}>
+            <input type="text" value={text} placeholder="Enter new list" onChange={(e) => setText(e.target.value)} />
+            <button>Add</button>
+        </form>
+    )
+}
+
+export default Form;
+```
+
+```js
+// src/context/DataContext.js
+
+    const add = (data) => {
+        const newItem = {
+            id: lists.length + 1,
+            title: data
+        }
+
+        const newList = [...lists, newItem];
+
+        setLists(newList)
+    } 
+```

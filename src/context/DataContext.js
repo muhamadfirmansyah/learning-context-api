@@ -15,9 +15,20 @@ const initialState = [
 export const DataProvider = (props) => {
 
     const [lists, setLists] = useState(initialState);
+
+    const add = (data) => {
+        const newItem = {
+            id: lists.length + 1,
+            title: data
+        }
+
+        const newList = [...lists, newItem];
+
+        setLists(newList)
+    } 
     
     return (
-        <DataContext.Provider value={{ lists }}>
+        <DataContext.Provider value={{ lists, add }}>
             { props.children }
         </DataContext.Provider>
     )

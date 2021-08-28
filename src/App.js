@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Todos from './components/Todos';
+import Form from './components/Form';
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
 
       <main>
         <Todos />
+
+        <Form />
       </main>
     </div>
   );
